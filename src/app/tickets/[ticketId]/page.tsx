@@ -1,9 +1,6 @@
-import { Link } from "lucide-react";
-import { Placeholder } from "@/components/placeholder";
-import { Button } from "@/components/ui/button";
+import { notFound } from "next/navigation";
 import { TicketItem } from "@/features/ticket/components/ticket-item";
 import { getTicket } from "@/features/ticket/queries/get-tickets";
-import { ticketsPath } from "@/paths";
 
 type TicketPageProps = {
     params: Promise<{
@@ -16,13 +13,7 @@ const TicketPage = async ({ params }: TicketPageProps) => {
     const ticket = await getTicket(ticketId);
 
     if (!ticket) {
-        return (
-            <Placeholder label="Ticket not found" button={
-                <Button asChild variant="outline">
-                    <Link href={ticketsPath()}>Go to tickets</Link>
-                </Button>
-            } />
-        );
+        notFound();
     }
 
     return (
