@@ -11,6 +11,8 @@ export const getTickets = async (): Promise<Ticket[]> => {
 export const getTicket = async (id: string): Promise<Ticket | null> => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
+    //throw new Error("Oops! Something went wrong.");
+
     const maybeTicket = initialTickets.find((ticket) => ticket.id === id);
 
     return new Promise((resolve) => {
