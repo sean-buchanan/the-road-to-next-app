@@ -1,6 +1,15 @@
 import { notFound } from "next/navigation";
 import { TicketItem } from "@/features/ticket/components/ticket-item";
 import { getTicket } from "@/features/ticket/queries/get-ticket";
+//import { prisma } from "@/lib/prisma";
+
+//Caches all of these pages as static pages. Cache revalidation is needed if the data changes.
+// export const generateStaticParams = async () => {
+//     const tickets = await prisma.ticket.findMany();
+//     return tickets.map((ticket) => ({
+//         ticketId: ticket.id,
+//     }));
+// };
 
 type TicketPageProps = {
     params: Promise<{

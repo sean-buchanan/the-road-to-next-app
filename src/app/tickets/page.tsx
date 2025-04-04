@@ -1,3 +1,6 @@
+//export const dynamic = "force-dynamic"; 
+//export const revalidate = 30; 
+
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Heading } from "@/components/heading";
