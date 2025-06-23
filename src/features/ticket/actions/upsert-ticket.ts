@@ -11,9 +11,14 @@ const upsertTicketSchema = z.object({
   content: z.string().min(1, "Content is required").max(1024, "Content must be less than 1024 characters"),
 });
 
+export type UpsertTicketReturnType = {
+  message: string;
+  payload?: FormData;
+};
+
 export const upsertTicket = async (
   id: string | undefined,
-  _actionState: { message: string },
+  _actionState: UpsertTicketReturnType,
   formData: FormData
 ) => {
   try {
@@ -28,7 +33,12 @@ export const upsertTicket = async (
       create: data,
     });
   } catch (error) {
-    return { message: "Error creating ticket: " + (error instanceof z.ZodError ? error.errors.map(e => e.message).join(", ") : "Unknown error") };
+    const result: UpsertTicketReturnType = { 
+      message: "Error creating ticket: " + (error instanceof z.ZodError ? error.errors.map(e => e.message).join(", ") : "Unknown error"),
+      payload: formData
+    };
+
+    return result
   }
 
   revalidatePath(ticketsPath());
@@ -37,6 +47,9 @@ export const upsertTicket = async (
     redirect(ticketPath(id));
   }
 
-  return { message: "Ticket created" } 
+  const result: UpsertTicketReturnType = {
+    message: "Ticket created"
+  };
+  return result;
 };
 

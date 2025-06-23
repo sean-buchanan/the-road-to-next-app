@@ -16,20 +16,19 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
 const [actionState, action] = useActionState(
     upsertTicket.bind(null, ticket?.id),
     { message: "" }
-  );
+);
 
-  return (
+return (
     <form action={action} className="flex flex-col gap-y-2">
-      <Label htmlFor="title">Title</Label>
-      <Input id="title" name="title" type="text" defaultValue={ticket?.title} />
+        <Label htmlFor="title">TitleX</Label>
+        <Input id="title" name="title" type="text" defaultValue={(actionState.payload?.get("title") as string) ?? ticket?.title} />
 
-      <Label htmlFor="content">Content</Label>
-      <Textarea id="content" name="content" defaultValue={ticket?.content} />
+        <Label htmlFor="content">Content</Label>
+        <Textarea id="content" name="content" defaultValue={(actionState.payload?.get("content") as string) ?? ticket?.content} />
 
-      <SubmitButton label={ticket ? "Save" : "Create"} />
-      {actionState.message}
+        <SubmitButton label={ticket ? "Save" : "Create"} />
+        {actionState.message}
     </form>
-  );
-};
+)};
 
 export { TicketUpsertForm };
