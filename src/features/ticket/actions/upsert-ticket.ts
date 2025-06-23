@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { ActionState, fromErrorToActionState } from "@/components/form/utils/to-action-state";
 import { prisma } from "@/lib/prisma";
 import { ticketPath, ticketsPath } from "@/paths";
 
@@ -11,14 +12,9 @@ const upsertTicketSchema = z.object({
   content: z.string().min(1, "Content is required").max(1024, "Content must be less than 1024 characters"),
 });
 
-export type UpsertTicketReturnType = {
-  message: string;
-  payload?: FormData;
-};
-
 export const upsertTicket = async (
   id: string | undefined,
-  _actionState: UpsertTicketReturnType,
+  _actionState: ActionState,
   formData: FormData
 ) => {
   try {
@@ -33,12 +29,7 @@ export const upsertTicket = async (
       create: data,
     });
   } catch (error) {
-    const result: UpsertTicketReturnType = { 
-      message: "Error creating ticket: " + (error instanceof z.ZodError ? error.errors.map(e => e.message).join(", ") : "Unknown error"),
-      payload: formData
-    };
-
-    return result
+    return fromErrorToActionState(error, formData);
   }
 
   revalidatePath(ticketsPath());
@@ -47,7 +38,7 @@ export const upsertTicket = async (
     redirect(ticketPath(id));
   }
 
-  const result: UpsertTicketReturnType = {
+  const result: ActionState = {
     message: "Ticket created"
   };
   return result;
