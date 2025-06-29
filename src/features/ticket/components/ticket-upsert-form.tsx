@@ -2,6 +2,7 @@
 
 import { Ticket } from "@prisma/client";
 import { useActionState } from "react";
+import { FieldError } from "@/components/form/field-error";
 import { SubmitButton } from "@/components/form/submit-button";
 import { EMPTY_ACTION_STATE } from "@/components/form/utils/to-action-state";
 import { Input } from "@/components/ui/input";
@@ -23,9 +24,11 @@ return (
     <form action={action} className="flex flex-col gap-y-2">
         <Label htmlFor="title">TitleX</Label>
         <Input id="title" name="title" type="text" defaultValue={(actionState.payload?.get("title") as string) ?? ticket?.title} />
+        <FieldError actionState={actionState} name="title" />
 
         <Label htmlFor="content">Content</Label>
         <Textarea id="content" name="content" defaultValue={(actionState.payload?.get("content") as string) ?? ticket?.content} />
+        <FieldError actionState={actionState} name="content" />
 
         <SubmitButton label={ticket ? "Save" : "Create"} />
         {actionState.message}
